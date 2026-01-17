@@ -1,4 +1,4 @@
-import type { ContactFormData, SelectOption } from './types';
+import type { SelectOption } from './types';
 
 export const PRODUCT_OPTIONS: SelectOption[] = [
   { value: '', label: 'Select product...' },
@@ -18,17 +18,6 @@ export const PRODUCT_ASSIGNEE_MAP: Record<string, string> = {
   'product-a': 'shlomi',
   'product-b': 'maor',
   'product-c': 'maor',
-};
-
-// Initial form state
-export const INITIAL_FORM_DATA: ContactFormData = {
-  fullName: '',
-  email: '',
-  phone: '',
-  product: '',
-  message: '',
-  meetingDatetime: '',
-  meetingMedium: '',
 };
 
 // API config

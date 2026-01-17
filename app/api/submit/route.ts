@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import type { ContactFormData, WebhookPayload, SubmitResponse } from '../../lib/types';
-import { validateForm, hasErrors } from '../../lib/validation';
+import { contactFormSchema } from '../../lib/schema';
+import type { WebhookPayload, SubmitResponse } from '../../lib/types';
 import { API_TIMEOUT_MS, PRODUCT_ASSIGNEE_MAP } from '../../lib/constants';
 
 // Simple in-memory rate limiter (resets on server restart)
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
     }
 
     // Parse request body
-    const formData = await request.json() as ContactFormData;
+    const body = await request.json();
 
     // Get webhook URL from environment variable
     const webhookUrl = process.env.MAKE_WEBHOOK_URL;
@@ -69,15 +69,17 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
       );
     }
 
-    // Server-side validation (duplicate of client-side for security)
-    const validationErrors = validateForm(formData);
-    if (hasErrors(validationErrors)) {
-      const errorMessages = Object.values(validationErrors).join(', ');
+    // Server-side validation using Zod schema
+    const parseResult = contactFormSchema.safeParse(body);
+    if (!parseResult.success) {
+      const errorMessages = parseResult.error.issues.map((issue) => issue.message).join(', ');
       return NextResponse.json(
         { success: false, message: `Validation failed: ${errorMessages}` },
         { status: 400 }
       );
     }
+
+    const formData = parseResult.data;
 
     // Validate product has valid assignee mapping
     const assignee = PRODUCT_ASSIGNEE_MAP[formData.product];
