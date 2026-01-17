@@ -27,6 +27,12 @@ export interface WebhookPayload {
 export interface SubmitResponse {
   success: boolean;
   message: string;
+  error?: {
+    type?: string;
+    status?: number;
+    statusText?: string;
+    details?: string;
+  };
 }
 
 // Toast notification

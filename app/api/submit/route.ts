@@ -131,10 +131,23 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
       clearTimeout(timeoutId);
 
       if (!webhookResponse.ok) {
-        console.error('[API] Make webhook returned error:', webhookResponse.status);
+        const responseText = await webhookResponse.text().catch(() => 'No response body');
+        console.error('[API] Make webhook error:', {
+          status: webhookResponse.status,
+          statusText: webhookResponse.statusText,
+          body: responseText,
+        });
         return NextResponse.json(
-          { success: false, message: 'Failed to process your request. Please try again.' },
-          { status: 500 }
+          {
+            success: false,
+            message: `Webhook failed: ${webhookResponse.status} ${webhookResponse.statusText}`,
+            error: {
+              status: webhookResponse.status,
+              statusText: webhookResponse.statusText,
+              details: responseText,
+            }
+          },
+          { status: webhookResponse.status }
         );
       }
 
@@ -157,18 +170,36 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
       if (fetchError instanceof Error && fetchError.name === 'AbortError') {
         console.error('[API] Make webhook timeout');
         return NextResponse.json(
-          { success: false, message: 'Request timed out. Please try again.' },
+          {
+            success: false,
+            message: 'Request timed out. Please try again.',
+            error: { type: 'timeout', details: 'Webhook request exceeded time limit' }
+          },
           { status: 504 }
         );
       }
 
-      throw fetchError;
+      const errorMessage = fetchError instanceof Error ? fetchError.message : 'Unknown fetch error';
+      console.error('[API] Fetch error:', errorMessage);
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Network error: ${errorMessage}`,
+          error: { type: 'network', details: errorMessage }
+        },
+        { status: 502 }
+      );
     }
 
   } catch (error) {
-    console.error('[API] Unexpected error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[API] Unexpected error:', errorMessage);
     return NextResponse.json(
-      { success: false, message: 'An unexpected error occurred. Please try again.' },
+      {
+        success: false,
+        message: `Server error: ${errorMessage}`,
+        error: { type: 'server', details: errorMessage }
+      },
       { status: 500 }
     );
   }
