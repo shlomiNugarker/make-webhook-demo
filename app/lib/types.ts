@@ -1,27 +1,44 @@
 // Form field values (what user inputs)
 export interface ContactFormData {
-  name: string;
+  fullName: string;
   email: string;
   phone: string;
-  meeting_time: string;
-  location: string;
   product: string;
+  message: string;
+  meetingDatetime: string;
+  meetingMedium: string;
 }
 
-// Payload sent to API/webhook
-export interface WebhookPayload extends ContactFormData {
-  submitted_at: string;
-  source: 'landing-page';
+// Payload sent to Make.com webhook
+export interface WebhookPayload {
+  leadId: string;
+  createdAt: string;
+  source: string;
+  contact: {
+    fullName: string;
+    email: string;
+    phone: string;
+  };
+  product: string;
+  message: string | null;
+  meeting: {
+    medium: string | null;
+    datetime: string | null;
+  };
+  routing: {
+    assignee: string;
+  };
 }
 
 // Form field errors
 export interface FormErrors {
-  name?: string;
+  fullName?: string;
   email?: string;
   phone?: string;
-  meeting_time?: string;
-  location?: string;
   product?: string;
+  message?: string;
+  meetingDatetime?: string;
+  meetingMedium?: string;
 }
 
 // API response

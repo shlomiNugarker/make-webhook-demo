@@ -1,7 +1,7 @@
 'use client';
 
 import { useContactForm } from '../hooks/useContactForm';
-import { MEETING_TIME_OPTIONS, PRODUCT_OPTIONS } from '../lib/constants';
+import { PRODUCT_OPTIONS, MEETING_MEDIUM_OPTIONS } from '../lib/constants';
 import FormField from './FormField';
 import SelectField from './SelectField';
 import SubmitButton from './SubmitButton';
@@ -32,11 +32,11 @@ export default function ContactForm() {
             Contact Information
           </h3>
           <FormField
-            id="name"
+            id="fullName"
             label="Full Name"
-            value={formData.name}
-            onChange={(value) => updateField('name', value)}
-            error={errors.name}
+            value={formData.fullName}
+            onChange={(value) => updateField('fullName', value)}
+            error={errors.fullName}
             required
             disabled={isLoading}
             placeholder="John Doe"
@@ -69,39 +69,58 @@ export default function ContactForm() {
           </div>
         </div>
 
-        {/* Preferences Section */}
+        {/* Product Section */}
         <div className="space-y-4 pt-2">
           <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
-            Preferences
+            Product Interest
+          </h3>
+          <SelectField
+            id="product"
+            label="Product"
+            value={formData.product}
+            onChange={(value) => updateField('product', value)}
+            options={PRODUCT_OPTIONS}
+            error={errors.product}
+            required
+            disabled={isLoading}
+          />
+
+          <FormField
+            id="message"
+            label="Message"
+            type="textarea"
+            value={formData.message}
+            onChange={(value) => updateField('message', value)}
+            disabled={isLoading}
+            placeholder="Tell us more about your needs..."
+            rows={3}
+          />
+        </div>
+
+        {/* Meeting Section */}
+        <div className="space-y-4 pt-2">
+          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+            Schedule a Meeting (Optional)
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <SelectField
-              id="meeting_time"
-              label="Meeting Time"
-              value={formData.meeting_time}
-              onChange={(value) => updateField('meeting_time', value)}
-              options={MEETING_TIME_OPTIONS}
+            <FormField
+              id="meetingDatetime"
+              label="Date & Time"
+              type="datetime-local"
+              value={formData.meetingDatetime}
+              onChange={(value) => updateField('meetingDatetime', value)}
               disabled={isLoading}
             />
 
             <SelectField
-              id="product"
-              label="Product Interest"
-              value={formData.product}
-              onChange={(value) => updateField('product', value)}
-              options={PRODUCT_OPTIONS}
+              id="meetingMedium"
+              label="Meeting Type"
+              value={formData.meetingMedium}
+              onChange={(value) => updateField('meetingMedium', value)}
+              options={MEETING_MEDIUM_OPTIONS}
               disabled={isLoading}
             />
           </div>
-
-          <FormField
-            id="location"
-            label="Location"
-            value={formData.location}
-            onChange={(value) => updateField('location', value)}
-            disabled={isLoading}
-            placeholder="Tel Aviv, Israel"
-          />
         </div>
 
         <div className="pt-4">

@@ -1,11 +1,4 @@
-import type { SelectOption } from './types';
-
-export const MEETING_TIME_OPTIONS: SelectOption[] = [
-  { value: '', label: 'Select time...' },
-  { value: 'morning', label: 'Morning (9:00-12:00)' },
-  { value: 'afternoon', label: 'Afternoon (12:00-17:00)' },
-  { value: 'evening', label: 'Evening (17:00-20:00)' },
-];
+import type { ContactFormData, SelectOption } from './types';
 
 export const PRODUCT_OPTIONS: SelectOption[] = [
   { value: '', label: 'Select product...' },
@@ -14,14 +7,28 @@ export const PRODUCT_OPTIONS: SelectOption[] = [
   { value: 'product-c', label: 'Product C' },
 ];
 
+export const MEETING_MEDIUM_OPTIONS: SelectOption[] = [
+  { value: '', label: 'Select medium...' },
+  { value: 'online', label: 'Online' },
+  { value: 'phone', label: 'Phone' },
+];
+
+// Product to assignee mapping
+export const PRODUCT_ASSIGNEE_MAP: Record<string, string> = {
+  'product-a': 'shlomi',
+  'product-b': 'maor',
+  'product-c': 'maor',
+};
+
 // Initial form state
-export const INITIAL_FORM_DATA = {
-  name: '',
+export const INITIAL_FORM_DATA: ContactFormData = {
+  fullName: '',
   email: '',
   phone: '',
-  meeting_time: '',
-  location: '',
   product: '',
+  message: '',
+  meetingDatetime: '',
+  meetingMedium: '',
 };
 
 // API config

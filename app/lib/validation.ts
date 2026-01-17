@@ -41,11 +41,11 @@ export function isValidName(name: string): boolean {
 export function validateForm(data: ContactFormData): FormErrors {
   const errors: FormErrors = {};
 
-  // Name validation (required)
-  if (!data.name.trim()) {
-    errors.name = 'Name is required';
-  } else if (!isValidName(data.name)) {
-    errors.name = 'Name must be at least 2 characters';
+  // Full name validation (required)
+  if (!data.fullName.trim()) {
+    errors.fullName = 'Full name is required';
+  } else if (!isValidName(data.fullName)) {
+    errors.fullName = 'Name must be at least 2 characters';
   }
 
   // Email validation (required)
@@ -62,8 +62,13 @@ export function validateForm(data: ContactFormData): FormErrors {
     errors.phone = 'Please enter a valid Israeli phone (05X-XXXXXXX)';
   }
 
-  // Optional fields don't need validation
-  // meeting_time, location, product are all optional
+  // Product validation (required)
+  if (!data.product) {
+    errors.product = 'Please select a product';
+  }
+
+  // Optional fields: message, meetingDatetime, meetingMedium
+  // No validation required
 
   return errors;
 }

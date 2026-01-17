@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type { ContactFormData, WebhookPayload, SubmitResponse } from '../../lib/types';
 import { validateForm, hasErrors } from '../../lib/validation';
-import { API_TIMEOUT_MS } from '../../lib/constants';
+import { API_TIMEOUT_MS, PRODUCT_ASSIGNEE_MAP } from '../../lib/constants';
 
-// TODO: Replace with Redis-based rate limiting for production
 // Simple in-memory rate limiter (resets on server restart)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
@@ -24,6 +23,15 @@ function checkRateLimit(ip: string): boolean {
 
   record.count++;
   return true;
+}
+
+// Generate UUID v4
+function generateUUID(): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }
 
 // Warn if webhook URL is not configured (on first request)
@@ -71,12 +79,38 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
       );
     }
 
-    // Build webhook payload
+    // Validate product has valid assignee mapping
+    const assignee = PRODUCT_ASSIGNEE_MAP[formData.product];
+    if (!assignee) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid product selected.' },
+        { status: 400 }
+      );
+    }
+
+    // Build webhook payload with new contract structure
     const payload: WebhookPayload = {
-      ...formData,
-      submitted_at: new Date().toISOString(),
-      source: 'landing-page',
+      leadId: generateUUID(),
+      createdAt: new Date().toISOString(),
+      source: 'make-webhook-demo',
+      contact: {
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+      },
+      product: formData.product,
+      message: formData.message || null,
+      meeting: {
+        medium: formData.meetingMedium || null,
+        datetime: formData.meetingDatetime ? new Date(formData.meetingDatetime).toISOString() : null,
+      },
+      routing: {
+        assignee,
+      },
     };
+
+    // Log payload for debugging
+    console.log('[API] Payload to Make.com:', JSON.stringify(payload, null, 2));
 
     // Send to Make.com webhook with timeout
     const controller = new AbortController();
@@ -103,8 +137,11 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
       }
 
       console.log('[API] Form submitted successfully:', {
+        leadId: payload.leadId,
         email: formData.email,
-        timestamp: payload.submitted_at,
+        product: formData.product,
+        assignee: payload.routing.assignee,
+        timestamp: payload.createdAt,
       });
 
       return NextResponse.json({
