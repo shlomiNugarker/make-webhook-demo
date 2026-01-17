@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { contactFormSchema, type ContactFormData } from '../lib/schema';
 import { PRODUCT_OPTIONS, MEETING_MEDIUM_OPTIONS, API_TIMEOUT_MS } from '../lib/constants';
-import type { ToastState } from '../lib/types';
+import type { ToastState, SubmitResponse } from '../lib/types';
 import Toast from './Toast';
 
 import { Input } from '@/components/ui/input';
@@ -79,19 +79,29 @@ export default function ContactForm() {
 
       clearTimeout(timeoutId);
 
-      const result = await response.json();
+      const result: SubmitResponse = await response.json();
 
       if (response.ok) {
         showToast('success', result.message || 'Form submitted successfully!');
         reset();
       } else {
-        if (response.status === 400) {
-          showToast('error', result.message || 'Validation failed. Please check your input.');
-        } else if (response.status === 504) {
-          showToast('error', 'Request timed out. Please try again.');
-        } else {
-          showToast('error', result.message || 'Something went wrong. Please try again.');
+        // Build detailed error message
+        let errorMessage = result.message || 'Something went wrong.';
+
+        if (result.error) {
+          const { status, statusText, details, type } = result.error;
+          if (status && statusText) {
+            errorMessage = `Error ${status}: ${statusText}`;
+          }
+          if (details) {
+            errorMessage += ` - ${details}`;
+          }
+          if (type) {
+            errorMessage = `[${type.toUpperCase()}] ${errorMessage}`;
+          }
         }
+
+        showToast('error', errorMessage);
       }
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {
