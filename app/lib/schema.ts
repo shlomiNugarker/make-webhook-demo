@@ -25,9 +25,9 @@ export const contactFormSchema = z.object({
   phone: israeliPhoneSchema,
   product: z
     .string()
-    .min(1, 'Please select a product')
-    .refine((val) => ['product-a', 'product-b', 'product-c'].includes(val), {
-      message: 'Please select a valid product',
+    .min(1, 'Please select a service')
+    .refine((val) => ['web-development', 'automation', 'fullstack'].includes(val), {
+      message: 'Please select a valid service',
     }),
   message: z.string(),
   meetingDatetime: z.string(),

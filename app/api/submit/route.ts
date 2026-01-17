@@ -55,22 +55,30 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
     // Parse request body
     const body = await request.json();
 
-    // Get webhook URL from environment variable
-    const webhookUrl = process.env.MAKE_WEBHOOK_URL;
+    // Extract custom webhook URL if provided (for testing)
+    const { _webhookUrl, ...formBody } = body as { _webhookUrl?: string; [key: string]: unknown };
+
+    // Use custom webhook URL if provided, otherwise use env variable
+    const webhookUrl = _webhookUrl || process.env.MAKE_WEBHOOK_URL;
 
     if (!webhookUrl) {
       if (!webhookUrlWarned) {
-        console.warn('[API] MAKE_WEBHOOK_URL is not configured. Set it in .env.local');
+        console.warn('[API] MAKE_WEBHOOK_URL is not configured. Set it in .env.local or provide a custom URL.');
         webhookUrlWarned = true;
       }
       return NextResponse.json(
-        { success: false, message: 'Webhook URL not configured.' },
+        { success: false, message: 'No webhook URL configured. Please enter a webhook URL for testing.' },
         { status: 500 }
       );
     }
 
+    // Log if using custom webhook (for debugging)
+    if (_webhookUrl) {
+      console.log('[API] Using custom webhook URL for testing');
+    }
+
     // Server-side validation using Zod schema
-    const parseResult = contactFormSchema.safeParse(body);
+    const parseResult = contactFormSchema.safeParse(formBody);
     if (!parseResult.success) {
       const errorMessages = parseResult.error.issues.map((issue) => issue.message).join(', ');
       return NextResponse.json(

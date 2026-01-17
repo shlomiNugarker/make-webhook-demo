@@ -29,6 +29,7 @@ import {
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [customWebhookUrl, setCustomWebhookUrl] = useState('');
   const [toast, setToast] = useState<ToastState>({
     show: false,
     type: 'success',
@@ -73,7 +74,10 @@ export default function ContactForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          _webhookUrl: customWebhookUrl || undefined,
+        }),
         signal: controller.signal,
       });
 
@@ -254,6 +258,47 @@ export default function ContactForm() {
                   )}
                 />
               </div>
+            </div>
+
+            {/* Developer Testing Section */}
+            <div className="pt-4 border-t">
+              <details className="group">
+                <summary className="flex items-center gap-2 cursor-pointer list-none text-sm text-muted-foreground">
+                  <svg
+                    className="w-4 h-4 transition-transform group-open:rotate-90"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                  <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
+                    Developer Testing
+                  </span>
+                </summary>
+                <div className="mt-4 pl-6 space-y-2">
+                  <Label htmlFor="webhookUrl">Custom Webhook URL</Label>
+                  <Input
+                    id="webhookUrl"
+                    type="url"
+                    value={customWebhookUrl}
+                    onChange={(e) => setCustomWebhookUrl(e.target.value)}
+                    disabled={isSubmitting}
+                    placeholder="https://webhook.site/... or https://hook.make.com/..."
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Get a test URL from{' '}
+                    <a
+                      href="https://webhook.site"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary underline"
+                    >
+                      webhook.site
+                    </a>
+                  </p>
+                </div>
+              </details>
             </div>
 
             <Button
