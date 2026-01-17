@@ -45,28 +45,20 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
     }
 
     // Parse request body
-    const body = await request.json();
+    const formData = await request.json() as ContactFormData;
 
-    // Extract custom webhook URL if provided (for testing only)
-    const { _webhookUrl, ...formData } = body as ContactFormData & { _webhookUrl?: string };
-
-    // Use custom webhook URL if provided, otherwise use env variable
-    const webhookUrl = _webhookUrl || process.env.MAKE_WEBHOOK_URL;
+    // Get webhook URL from environment variable
+    const webhookUrl = process.env.MAKE_WEBHOOK_URL;
 
     if (!webhookUrl) {
       if (!webhookUrlWarned) {
-        console.warn('[API] MAKE_WEBHOOK_URL is not configured. Set it in .env.local or provide a custom URL.');
+        console.warn('[API] MAKE_WEBHOOK_URL is not configured. Set it in .env.local');
         webhookUrlWarned = true;
       }
       return NextResponse.json(
-        { success: false, message: 'No webhook URL configured. Please enter a webhook URL for testing.' },
+        { success: false, message: 'Webhook URL not configured.' },
         { status: 500 }
       );
-    }
-
-    // Log if using custom webhook (for debugging)
-    if (_webhookUrl) {
-      console.log('[API] Using custom webhook URL for testing');
     }
 
     // Server-side validation (duplicate of client-side for security)

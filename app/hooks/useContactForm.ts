@@ -9,7 +9,6 @@ export function useContactForm() {
   const [formData, setFormData] = useState<ContactFormData>(INITIAL_FORM_DATA);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [customWebhookUrl, setCustomWebhookUrl] = useState('');
   const [toast, setToast] = useState<ToastState>({
     show: false,
     type: 'success',
@@ -71,8 +70,6 @@ export function useContactForm() {
           ...formData,
           // Normalize phone before sending
           phone: normalizePhone(formData.phone),
-          // Include custom webhook URL if provided (for testing)
-          _webhookUrl: customWebhookUrl || undefined,
         }),
         signal: controller.signal,
       });
@@ -104,16 +101,14 @@ export function useContactForm() {
     } finally {
       setIsLoading(false);
     }
-  }, [formData, customWebhookUrl, showToast, resetForm]);
+  }, [formData, showToast, resetForm]);
 
   return {
     formData,
     errors,
     isLoading,
     toast,
-    customWebhookUrl,
     updateField,
-    setCustomWebhookUrl,
     submitForm,
     hideToast,
   };

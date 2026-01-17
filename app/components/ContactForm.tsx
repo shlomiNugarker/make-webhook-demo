@@ -13,9 +13,7 @@ export default function ContactForm() {
     errors,
     isLoading,
     toast,
-    customWebhookUrl,
     updateField,
-    setCustomWebhookUrl,
     submitForm,
     hideToast,
   } = useContactForm();
@@ -106,55 +104,7 @@ export default function ContactForm() {
           />
         </div>
 
-        {/* Webhook URL for Testing */}
-        <div className="pt-4 border-t border-gray-100">
-          <details className="group">
-            <summary className="flex items-center gap-2 cursor-pointer list-none">
-              <svg
-                className="w-4 h-4 text-gray-400 transition-transform group-open:rotate-90"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-              <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
-                Developer Testing
-              </span>
-            </summary>
-            <div className="mt-4 pl-6">
-              <label
-                htmlFor="webhookUrl"
-                className="block text-sm font-medium text-gray-600 mb-1.5"
-              >
-                Webhook URL
-              </label>
-              <input
-                id="webhookUrl"
-                type="url"
-                value={customWebhookUrl}
-                onChange={(e) => setCustomWebhookUrl(e.target.value)}
-                disabled={isLoading}
-                placeholder="https://hook.make.com/... or https://webhook.site/..."
-                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 disabled:bg-gray-50 disabled:cursor-not-allowed text-sm transition-colors"
-              />
-              <p className="mt-2 text-xs text-gray-500">
-                Get a test URL from{' '}
-                <a
-                  href="https://webhook.site"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-indigo-600 hover:text-indigo-700 font-medium"
-                >
-                  webhook.site
-                </a>
-                {' '}or enter your Make.com webhook URL
-              </p>
-            </div>
-          </details>
-        </div>
-
-        <div className="pt-2">
+        <div className="pt-4">
           <SubmitButton isLoading={isLoading}>
             Send Message
           </SubmitButton>
