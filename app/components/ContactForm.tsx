@@ -26,6 +26,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { MessageSquare, User, Briefcase, Calendar, Send, Loader2, Settings } from 'lucide-react';
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -121,122 +123,93 @@ export default function ContactForm() {
 
   return (
     <>
-      <Card className="w-full max-w-lg mx-auto">
-        <CardHeader>
-          <CardTitle>Contact Information</CardTitle>
-          <CardDescription>Fill in your details and we&apos;ll get back to you</CardDescription>
+      <Card className="w-full max-w-2xl mx-auto shadow-xl border-0">
+        <CardHeader className="text-center pb-2">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            <MessageSquare className="w-8 h-8 text-white" />
+          </div>
+          <CardTitle className="text-2xl">Get in Touch</CardTitle>
+          <CardDescription className="text-base">
+            Fill out the form below and we&apos;ll get back to you within 24 hours.
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="fullName">
-                Full Name <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="fullName"
-                placeholder="John Doe"
-                disabled={isSubmitting}
-                aria-invalid={!!errors.fullName}
-                {...register('fullName')}
-              />
-              {errors.fullName && (
-                <p className="text-sm text-destructive">{errors.fullName.message}</p>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">
-                  Email <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="john@example.com"
-                  disabled={isSubmitting}
-                  aria-invalid={!!errors.email}
-                  {...register('email')}
-                />
-                {errors.email && (
-                  <p className="text-sm text-destructive">{errors.email.message}</p>
-                )}
+        <CardContent className="pt-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Contact Information Section */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <User className="w-4 h-4" />
+                <span>Contact Information</span>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone">
-                  Phone <span className="text-destructive">*</span>
+                <Label htmlFor="fullName">
+                  Full Name <span className="text-destructive">*</span>
                 </Label>
                 <Input
-                  id="phone"
-                  type="tel"
-                  placeholder="054-1234567"
+                  id="fullName"
+                  placeholder="John Doe"
                   disabled={isSubmitting}
-                  aria-invalid={!!errors.phone}
-                  {...register('phone')}
+                  aria-invalid={!!errors.fullName}
+                  {...register('fullName')}
                 />
-                {errors.phone && (
-                  <p className="text-sm text-destructive">{errors.phone.message}</p>
+                {errors.fullName && (
+                  <p className="text-sm text-destructive">{errors.fullName.message}</p>
                 )}
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="product">
-                Product <span className="text-destructive">*</span>
-              </Label>
-              <Controller
-                name="product"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">
+                    Email <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="john@example.com"
                     disabled={isSubmitting}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a product" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {PRODUCT_OPTIONS.filter(opt => opt.value).map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.product && (
-                <p className="text-sm text-destructive">{errors.product.message}</p>
-              )}
+                    aria-invalid={!!errors.email}
+                    {...register('email')}
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-destructive">{errors.email.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone">
+                    Phone <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="054-1234567"
+                    disabled={isSubmitting}
+                    aria-invalid={!!errors.phone}
+                    {...register('phone')}
+                  />
+                  {errors.phone && (
+                    <p className="text-sm text-destructive">{errors.phone.message}</p>
+                  )}
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="message">Message</Label>
-              <Textarea
-                id="message"
-                placeholder="Tell us more about your needs..."
-                rows={3}
-                disabled={isSubmitting}
-                {...register('message')}
-              />
-            </div>
+            <Separator />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="meetingDatetime">Meeting Date & Time</Label>
-                <Input
-                  id="meetingDatetime"
-                  type="datetime-local"
-                  disabled={isSubmitting}
-                  {...register('meetingDatetime')}
-                />
+            {/* Project Details Section */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <Briefcase className="w-4 h-4" />
+                <span>Project Details</span>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="meetingMedium">Meeting Type</Label>
+                <Label htmlFor="product">
+                  Service <span className="text-destructive">*</span>
+                </Label>
                 <Controller
-                  name="meetingMedium"
+                  name="product"
                   control={control}
                   render={({ field }) => (
                     <Select
@@ -245,10 +218,10 @@ export default function ContactForm() {
                       disabled={isSubmitting}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select type" />
+                        <SelectValue placeholder="Select a service" />
                       </SelectTrigger>
                       <SelectContent>
-                        {MEETING_MEDIUM_OPTIONS.filter(opt => opt.value).map((option) => (
+                        {PRODUCT_OPTIONS.filter(opt => opt.value).map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>
@@ -257,56 +230,134 @@ export default function ContactForm() {
                     </Select>
                   )}
                 />
+                {errors.product && (
+                  <p className="text-sm text-destructive">{errors.product.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="message">Message</Label>
+                <Textarea
+                  id="message"
+                  placeholder="Tell us about your project, goals, and timeline..."
+                  rows={4}
+                  disabled={isSubmitting}
+                  {...register('message')}
+                />
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* Schedule Meeting Section */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <Calendar className="w-4 h-4" />
+                <span>Schedule a Meeting (Optional)</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="meetingDatetime">Preferred Date & Time</Label>
+                  <Input
+                    id="meetingDatetime"
+                    type="datetime-local"
+                    disabled={isSubmitting}
+                    {...register('meetingDatetime')}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="meetingMedium">Meeting Type</Label>
+                  <Controller
+                    name="meetingMedium"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        disabled={isSubmitting}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {MEETING_MEDIUM_OPTIONS.filter(opt => opt.value).map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
               </div>
             </div>
 
             {/* Developer Testing Section */}
-            <div className="pt-4 border-t">
-              <details className="group">
-                <summary className="flex items-center gap-2 cursor-pointer list-none text-sm text-muted-foreground">
-                  <svg
-                    className="w-4 h-4 transition-transform group-open:rotate-90"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                  <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
-                    Developer Testing
-                  </span>
-                </summary>
-                <div className="mt-4 pl-6 space-y-2">
-                  <Label htmlFor="webhookUrl">Custom Webhook URL</Label>
-                  <Input
-                    id="webhookUrl"
-                    type="url"
-                    value={customWebhookUrl}
-                    onChange={(e) => setCustomWebhookUrl(e.target.value)}
-                    disabled={isSubmitting}
-                    placeholder="https://webhook.site/... or https://hook.make.com/..."
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Get a test URL from{' '}
-                    <a
-                      href="https://webhook.site"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary underline"
-                    >
-                      webhook.site
-                    </a>
-                  </p>
+            {process.env.NODE_ENV === 'development' && (
+              <>
+                <Separator />
+                <div className="space-y-4">
+                  <details className="group">
+                    <summary className="flex items-center gap-2 cursor-pointer list-none text-sm font-medium text-muted-foreground">
+                      <Settings className="w-4 h-4" />
+                      <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
+                        Developer Testing
+                      </span>
+                      <svg
+                        className="w-4 h-4 ml-auto transition-transform group-open:rotate-90"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </summary>
+                    <div className="mt-4 space-y-2">
+                      <Label htmlFor="webhookUrl">Custom Webhook URL</Label>
+                      <Input
+                        id="webhookUrl"
+                        type="url"
+                        value={customWebhookUrl}
+                        onChange={(e) => setCustomWebhookUrl(e.target.value)}
+                        disabled={isSubmitting}
+                        placeholder="https://webhook.site/... or https://hook.make.com/..."
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Get a test URL from{' '}
+                        <a
+                          href="https://webhook.site"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary underline"
+                        >
+                          webhook.site
+                        </a>
+                      </p>
+                    </div>
+                  </details>
                 </div>
-              </details>
-            </div>
+              </>
+            )}
 
             <Button
               type="submit"
-              className="w-full"
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-6"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Sending...' : 'Send Message'}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Send className="w-5 h-5 mr-2" />
+                  Send Message
+                </>
+              )}
             </Button>
           </form>
         </CardContent>

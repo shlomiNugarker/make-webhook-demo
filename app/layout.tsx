@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Contact Us | Make Webhook Demo",
-  description: "Get in touch with us",
+  title: "Shlomi & Maor | Web Development & Automation Services",
+  description: "Expert web development and automation services. We build modern websites, seamless integrations, and full-stack solutions tailored to your business needs.",
 };
 
 export default function RootLayout({
