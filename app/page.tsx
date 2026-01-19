@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import ContactForm from './components/ContactForm';
 import { Code2, Zap, Layers, Check, Clock, Users, Sparkles } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -36,6 +37,31 @@ const stats = [
 export default function Home() {
   return (
     <div className="min-h-screen">
+      {/* Header */}
+      <header className="absolute top-0 left-0 right-0 z-20">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <a href="/">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={120}
+                height={120}
+                className="rounded-xl"
+              />
+            </a>
+            <nav className="flex items-center gap-6">
+              <a href="#services" className="text-white/80 hover:text-white transition-colors text-sm font-medium">
+                Services
+              </a>
+              <a href="#contact" className="text-white/80 hover:text-white transition-colors text-sm font-medium">
+                Contact
+              </a>
+            </nav>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="relative min-h-[80vh] bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white overflow-hidden">
         {/* Background decorations */}
@@ -43,7 +69,7 @@ export default function Home() {
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-4 py-24 sm:py-32 relative z-10">
+        <div className="container mx-auto px-4 pt-32 pb-24 sm:pt-40 sm:pb-32 relative z-10">
           <div className="max-w-4xl">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm mb-8 border border-white/20">
@@ -204,9 +230,22 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t bg-white">
-        <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-          <p>&copy; {new Date().getFullYear()} Shlomi & Maor. All rights reserved.</p>
+      <footer className="py-12 border-t bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={120}
+                height={120}
+                className="rounded-xl"
+              />
+            </div>
+            <p className="text-muted-foreground text-sm">
+              &copy; {new Date().getFullYear()} All rights reserved.
+            </p>
+          </div>
         </div>
       </footer>
     </div>

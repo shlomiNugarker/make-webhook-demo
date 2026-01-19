@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
 import { contactFormSchema, type ContactFormData } from '../lib/schema';
 import { PRODUCT_OPTIONS, MEETING_MEDIUM_OPTIONS, API_TIMEOUT_MS } from '../lib/constants';
 import type { ToastState, SubmitResponse } from '../lib/types';
@@ -27,7 +28,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { MessageSquare, User, Briefcase, Calendar, Send, Loader2, Settings } from 'lucide-react';
+import { User, Briefcase, Calendar, Send, Loader2, Settings } from 'lucide-react';
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -125,9 +126,13 @@ export default function ContactForm() {
     <>
       <Card className="w-full max-w-2xl mx-auto shadow-xl border-0">
         <CardHeader className="text-center pb-2">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-            <MessageSquare className="w-8 h-8 text-white" />
-          </div>
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={72}
+            height={72}
+            className="mx-auto mb-4 rounded-xl"
+          />
           <CardTitle className="text-2xl">Get in Touch</CardTitle>
           <CardDescription className="text-base">
             Fill out the form below and we&apos;ll get back to you within 24 hours.
