@@ -47,14 +47,14 @@ export default function Home() {
                 alt="Logo"
                 width={120}
                 height={120}
-                className="rounded-xl"
+                className="w-16 h-16 sm:w-20 sm:h-20 md:w-30 md:h-30 rounded-xl"
               />
             </a>
-            <nav className="flex items-center gap-6">
-              <a href="#services" className="text-white/80 hover:text-white transition-colors text-sm font-medium">
+            <nav className="hidden sm:flex items-center gap-4 md:gap-6">
+              <a href="#services" className="text-white/80 hover:text-white transition-colors text-sm font-medium py-2">
                 Services
               </a>
-              <a href="#contact" className="text-white/80 hover:text-white transition-colors text-sm font-medium">
+              <a href="#contact" className="text-white/80 hover:text-white transition-colors text-sm font-medium py-2">
                 Contact
               </a>
             </nav>
@@ -66,8 +66,8 @@ export default function Home() {
       <section className="relative min-h-[80vh] bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white overflow-hidden">
         {/* Background decorations */}
         <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-purple-500/20 rounded-full blur-3xl" />
 
         <div className="container mx-auto px-4 pt-32 pb-24 sm:pt-40 sm:pb-32 relative z-10">
           <div className="max-w-4xl">
@@ -78,7 +78,7 @@ export default function Home() {
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               We Build{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
                 Digital Solutions
@@ -87,7 +87,7 @@ export default function Home() {
             </h1>
 
             {/* Subheadline */}
-            <p className="text-xl text-slate-300 mb-10 max-w-2xl leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-slate-300 mb-10 max-w-2xl leading-relaxed">
               Expert web development and automation services by Shlomi & Maor.
               From custom websites to seamless integrations - we bring your ideas to life.
             </p>
@@ -106,7 +106,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-24 bg-slate-50">
+      <section id="services" className="py-16 sm:py-24 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-4">
@@ -121,11 +121,11 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
             {services.map((service) => (
               <Card key={service.title} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg bg-white">
                 <CardHeader>
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <service.icon className="w-7 h-7" />
                   </div>
                   <CardTitle className="text-xl">{service.title}</CardTitle>
@@ -155,9 +155,9 @@ export default function Home() {
       </section>
 
       {/* Team Section */}
-      <section className="py-24">
+      <section className="py-16 sm:py-24">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div>
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-4">
                 <Users className="w-4 h-4" />
@@ -197,7 +197,7 @@ export default function Home() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               {stats.map((stat) => (
                 <div key={stat.label} className="p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 text-center border">
                   <p className="text-3xl sm:text-4xl font-bold text-gradient mb-2">{stat.value}</p>
@@ -210,7 +210,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 bg-gradient-to-b from-slate-50 to-white">
+      <section id="contact" className="py-16 sm:py-24 bg-gradient-to-b from-slate-50 to-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
@@ -239,7 +239,7 @@ export default function Home() {
                 alt="Logo"
                 width={120}
                 height={120}
-                className="rounded-xl"
+                className="w-16 h-16 sm:w-20 sm:h-20 md:w-30 md:h-30 rounded-xl"
               />
             </div>
             <p className="text-muted-foreground text-sm">

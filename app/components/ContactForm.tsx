@@ -133,9 +133,9 @@ export default function ContactForm() {
             alt="Logo"
             width={72}
             height={72}
-            className="mx-auto mb-4 rounded-xl"
+            className="w-14 h-14 sm:w-18 sm:h-18 mx-auto mb-4 rounded-xl"
           />
-          <CardTitle className="text-2xl">Get in Touch</CardTitle>
+          <CardTitle className="text-xl sm:text-2xl">Get in Touch</CardTitle>
           <CardDescription className="text-base">
             Fill out the form below and we&apos;ll get back to you within 24 hours.
           </CardDescription>
@@ -312,7 +312,7 @@ export default function ContactForm() {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-6"
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 sm:py-6"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
