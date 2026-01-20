@@ -14,10 +14,6 @@ export interface WebhookPayload {
   };
   product: string;
   message: string | null;
-  meeting: {
-    medium: string | null;
-    datetime: string | null;
-  };
   routing: {
     assignee: string;
   };

@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { contactFormSchema, type ContactFormData } from '../lib/schema';
-import { PRODUCT_OPTIONS, MEETING_MEDIUM_OPTIONS, API_TIMEOUT_MS } from '../lib/constants';
+import { PRODUCT_OPTIONS, API_TIMEOUT_MS } from '../lib/constants';
 import type { ToastState, SubmitResponse } from '../lib/types';
 import Toast from './Toast';
 
@@ -28,9 +29,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { User, Briefcase, Calendar, Send, Loader2, Settings } from 'lucide-react';
+import { User, Briefcase, Send, Loader2, Settings } from 'lucide-react';
 
 export default function ContactForm() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customWebhookUrl, setCustomWebhookUrl] = useState('');
   const [devPassword, setDevPassword] = useState('');
@@ -54,8 +56,6 @@ export default function ContactForm() {
       phone: '',
       product: '',
       message: '',
-      meetingDatetime: '',
-      meetingMedium: '',
     },
   });
 
@@ -91,8 +91,8 @@ export default function ContactForm() {
       const result: SubmitResponse = await response.json();
 
       if (response.ok) {
-        showToast('success', result.message || 'Form submitted successfully!');
         reset();
+        router.push('/thank-you');
       } else {
         // Build detailed error message
         let errorMessage = result.message || 'Something went wrong.';
@@ -251,54 +251,6 @@ export default function ContactForm() {
                   disabled={isSubmitting}
                   {...register('message')}
                 />
-              </div>
-            </div>
-
-            <Separator />
-
-            {/* Schedule Meeting Section */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                <Calendar className="w-4 h-4" />
-                <span>Schedule a Meeting (Optional)</span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="meetingDatetime">Preferred Date & Time</Label>
-                  <Input
-                    id="meetingDatetime"
-                    type="datetime-local"
-                    disabled={isSubmitting}
-                    {...register('meetingDatetime')}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="meetingMedium">Meeting Type</Label>
-                  <Controller
-                    name="meetingMedium"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        disabled={isSubmitting}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {MEETING_MEDIUM_OPTIONS.filter(opt => opt.value).map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                </div>
               </div>
             </div>
 

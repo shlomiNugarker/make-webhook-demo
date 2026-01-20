@@ -7,12 +7,6 @@ export const PRODUCT_OPTIONS: SelectOption[] = [
   { value: 'fullstack', label: 'Full Stack Project' },
 ];
 
-export const MEETING_MEDIUM_OPTIONS: SelectOption[] = [
-  { value: '', label: 'Select medium...' },
-  { value: 'online', label: 'Online (Zoom/Meet)' },
-  { value: 'phone', label: 'Phone Call' },
-];
-
 // Service to assignee mapping
 // Shlomi = Web Developer, Maor = Automation Expert
 export const PRODUCT_ASSIGNEE_MAP: Record<string, string> = {

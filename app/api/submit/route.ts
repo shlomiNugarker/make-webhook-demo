@@ -121,10 +121,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
       },
       product: formData.product,
       message: formData.message || null,
-      meeting: {
-        medium: formData.meetingMedium || null,
-        datetime: formData.meetingDatetime ? new Date(formData.meetingDatetime).toISOString() : null,
-      },
       routing: {
         assignee,
       },

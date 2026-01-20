@@ -30,8 +30,6 @@ export const contactFormSchema = z.object({
       message: 'Please select a valid service',
     }),
   message: z.string(),
-  meetingDatetime: z.string(),
-  meetingMedium: z.string(),
 });
 
 // Infer TypeScript type from schema
