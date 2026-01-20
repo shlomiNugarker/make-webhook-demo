@@ -55,11 +55,20 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
     // Parse request body
     const body = await request.json();
 
-    // Extract custom webhook URL if provided (for testing)
-    const { _webhookUrl, ...formBody } = body as { _webhookUrl?: string; [key: string]: unknown };
+    // Extract custom webhook URL and dev password if provided (for testing)
+    const { _webhookUrl, _devPassword, ...formBody } = body as {
+      _webhookUrl?: string;
+      _devPassword?: string;
+      [key: string]: unknown
+    };
 
-    // Use custom webhook URL if provided, otherwise use env variable
-    const webhookUrl = _webhookUrl || process.env.MAKE_WEBHOOK_URL;
+    // Verify dev password if custom webhook URL is provided
+    const devPasswordCorrect = _devPassword === process.env.DEV_PASSWORD;
+
+    // Use custom webhook URL only if password is correct, otherwise use env variable
+    const webhookUrl = (_webhookUrl && devPasswordCorrect)
+      ? _webhookUrl
+      : process.env.MAKE_WEBHOOK_URL;
 
     if (!webhookUrl) {
       if (!webhookUrlWarned) {
@@ -73,8 +82,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<SubmitRes
     }
 
     // Log if using custom webhook (for debugging)
-    if (_webhookUrl) {
+    if (_webhookUrl && devPasswordCorrect) {
       console.log('[API] Using custom webhook URL for testing');
+    } else if (_webhookUrl && !devPasswordCorrect) {
+      console.log('[API] Custom webhook URL ignored - incorrect password');
     }
 
     // Server-side validation using Zod schema

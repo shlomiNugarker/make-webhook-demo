@@ -33,6 +33,7 @@ import { User, Briefcase, Calendar, Send, Loader2, Settings } from 'lucide-react
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customWebhookUrl, setCustomWebhookUrl] = useState('');
+  const [devPassword, setDevPassword] = useState('');
   const [toast, setToast] = useState<ToastState>({
     show: false,
     type: 'success',
@@ -80,6 +81,7 @@ export default function ContactForm() {
         body: JSON.stringify({
           ...data,
           _webhookUrl: customWebhookUrl || undefined,
+          _devPassword: devPassword || undefined,
         }),
         signal: controller.signal,
       });
@@ -318,27 +320,40 @@ export default function ContactForm() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </summary>
-                    <div className="mt-4 space-y-2">
-                      <Label htmlFor="webhookUrl">Custom Webhook URL</Label>
-                      <Input
-                        id="webhookUrl"
-                        type="url"
-                        value={customWebhookUrl}
-                        onChange={(e) => setCustomWebhookUrl(e.target.value)}
-                        disabled={isSubmitting}
-                        placeholder="https://webhook.site/... or https://hook.make.com/..."
-                      />
-                      <p className="text-xs text-muted-foreground">
-                        Get a test URL from{' '}
-                        <a
-                          href="https://webhook.site"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary underline"
-                        >
-                          webhook.site
-                        </a>
-                      </p>
+                    <div className="mt-4 space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="devPassword">Developer Password</Label>
+                        <Input
+                          id="devPassword"
+                          type="password"
+                          value={devPassword}
+                          onChange={(e) => setDevPassword(e.target.value)}
+                          disabled={isSubmitting}
+                          placeholder="Enter password to enable custom webhook"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="webhookUrl">Custom Webhook URL</Label>
+                        <Input
+                          id="webhookUrl"
+                          type="url"
+                          value={customWebhookUrl}
+                          onChange={(e) => setCustomWebhookUrl(e.target.value)}
+                          disabled={isSubmitting || !devPassword}
+                          placeholder="https://webhook.site/... or https://hook.make.com/..."
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          Get a test URL from{' '}
+                          <a
+                            href="https://webhook.site"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary underline"
+                          >
+                            webhook.site
+                          </a>
+                        </p>
+                      </div>
                     </div>
                   </details>
             </div>
