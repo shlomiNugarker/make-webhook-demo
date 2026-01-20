@@ -301,10 +301,8 @@ export default function ContactForm() {
             </div>
 
             {/* Developer Testing Section */}
-            {process.env.NODE_ENV === 'development' && (
-              <>
-                <Separator />
-                <div className="space-y-4">
+            <Separator />
+            <div className="space-y-4">
                   <details className="group">
                     <summary className="flex items-center gap-2 cursor-pointer list-none text-sm font-medium text-muted-foreground">
                       <Settings className="w-4 h-4" />
@@ -343,9 +341,7 @@ export default function ContactForm() {
                       </p>
                     </div>
                   </details>
-                </div>
-              </>
-            )}
+            </div>
 
             <Button
               type="submit"
