@@ -142,7 +142,7 @@ export default function ContactForm() {
             alt="Logo"
             width={72}
             height={72}
-            className="w-14 h-14 sm:w-18 sm:h-18 mx-auto mb-4 rounded-xl"
+            className="w-14 sm:w-18  mx-auto mb-4 rounded-xl"
           />
           <CardTitle className="text-xl sm:text-2xl">Get in Touch</CardTitle>
           <CardDescription className="text-base">

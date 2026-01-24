@@ -47,7 +47,7 @@ export default function Home() {
                 alt="Logo"
                 width={120}
                 height={120}
-                className="w-16 h-16 sm:w-20 sm:h-20 md:w-30 md:h-30 rounded-xl"
+                className="w-16 sm:w-20  md:w-30  rounded-xl"
               />
             </a>
             <nav className="hidden sm:flex items-center gap-4 md:gap-6">
@@ -239,7 +239,7 @@ export default function Home() {
                 alt="Logo"
                 width={120}
                 height={120}
-                className="w-16 h-16 sm:w-20 sm:h-20 md:w-30 md:h-30 rounded-xl"
+                className="w-16 h-16 sm:w-20 sm:h-20 md:w-30 rounded-xl"
               />
             </div>
             <p className="text-muted-foreground text-sm">
