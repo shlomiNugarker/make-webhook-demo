@@ -90,27 +90,36 @@ export default function ContactForm() {
 
       const result: SubmitResponse = await response.json();
 
-      if (response.ok) {
-        reset();
-        router.push('/thank-you');
-      } else {
-        // Build detailed error message
-        let errorMessage = result.message || 'Something went wrong.';
-
-        if (result.error) {
-          const { status, statusText, details, type } = result.error;
-          if (status && statusText) {
-            errorMessage = `Error ${status}: ${statusText}`;
+      switch (result.status) {
+        case 'ok':
+          reset();
+          if (result.nextUrl?.startsWith('http')) {
+            window.open(result.nextUrl, '_blank');
+          } else {
+            router.push(result.nextUrl || '/thank-you');
           }
-          if (details) {
-            errorMessage += ` - ${details}`;
+          break;
+        case 'duplicate':
+          showToast('error', result.message || 'You have already submitted a request.');
+          break;
+        case 'error':
+        default: {
+          let errorMessage = result.message || 'Something went wrong.';
+          if (result.error) {
+            const { status, statusText, details, type } = result.error;
+            if (status && statusText) {
+              errorMessage = `Error ${status}: ${statusText}`;
+            }
+            if (details) {
+              errorMessage += ` - ${details}`;
+            }
+            if (type) {
+              errorMessage = `[${type.toUpperCase()}] ${errorMessage}`;
+            }
           }
-          if (type) {
-            errorMessage = `[${type.toUpperCase()}] ${errorMessage}`;
-          }
+          showToast('error', errorMessage);
+          break;
         }
-
-        showToast('error', errorMessage);
       }
     } catch (error) {
       if (error instanceof Error && error.name === 'AbortError') {

@@ -19,10 +19,12 @@ export interface WebhookPayload {
   };
 }
 
-// API response
+// API response (unified shape)
 export interface SubmitResponse {
-  success: boolean;
+  status: 'ok' | 'duplicate' | 'error';
   message: string;
+  nextUrl?: string;
+  leadId?: string;
   error?: {
     type?: string;
     status?: number;
