@@ -1,4 +1,4 @@
-const FILLOUT_QUESTIONNAIRE_URL = 'https://forms.fillout.com/t/bwpjAGxTrDus';
+import { FILLOUT_MAOR_MEETING_URL } from './constants';
 
 export interface FilloutParams {
   leadId: string;
@@ -15,7 +15,7 @@ export interface FilloutParams {
  */
 export function buildNextUrl(params: FilloutParams): string {
   if (params.assignee === 'maor') {
-    const url = new URL(FILLOUT_QUESTIONNAIRE_URL);
+    const url = new URL(FILLOUT_MAOR_MEETING_URL);
     url.searchParams.set('leadId', params.leadId);
     url.searchParams.set('fullName', params.fullName);
     url.searchParams.set('email', params.email);

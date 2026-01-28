@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -30,6 +31,20 @@ export default function RootLayout({
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         {children}
+        <Script id="virtualspirits-chat" strategy="lazyOnload">
+          {`
+            var vsid = "si27736c382cb0a";
+            (function() {
+              var vsjs = document.createElement('script');
+              vsjs.type = 'text/javascript';
+              vsjs.async = true;
+              vsjs.setAttribute('defer', 'defer');
+              vsjs.src = 'https://www.virtualspirits.com/vsa/chat.js';
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(vsjs, s);
+            })();
+          `}
+        </Script>
       </body>
     </html>
   );
